@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from typing import Final
 import pyfiglet
 from simple_chalk import chalk
+from http import HTTPStatus
 
 # Loads .env file with the environment variables
 load_dotenv()
@@ -76,9 +77,8 @@ def get_city_weather(city: str, metric_unit) -> str:
     url: str = f"{BASE_URL}?appid={API_KEY}&q={city}&units={units}"
 
     response = requests.get(url)
-    print(response.status_code)
 
-    if response.status_code == 200:
+    if response.status_code == HTTPStatus.OK.value:
         # get parameters
         weather_json: dict = response.json()
         country: str = weather_json["sys"]["country"]
@@ -121,10 +121,13 @@ def get_city_weather(city: str, metric_unit) -> str:
         output += f"-> 🌍 La presión atmosférica es de {pressure} hPa\n"
         output += f"-> ☁ La nubosidad es del {cloudiness}%"
 
-    elif response.status_code == 404:
+    elif response.status_code == HTTPStatus.NOT_FOUND.value:
         output: str = chalk.yellow(
-            f"🕵️‍♀️ No se ha encontrado la ciudad: {city} (Prueba a volver a escribirla)"
+            f"🕵️‍♀️ No se ha encontrado la ciudad: {city} (Prueba a ejecutar la app y volver a escribirla)"
         )
+
+    elif response.status_code == HTTPStatus.UNAUTHORIZED.value:
+        output: str = chalk.red(f"🛑 ERROR: El API_KEY no es válido.")
 
     else:
         output: str = chalk.red(
