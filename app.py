@@ -50,7 +50,7 @@ def main() -> None:
             "¿Quieres ver los datos en medidas métricas (Cº y km/h) o imperiales (Fº y mph)? (m/i. Default: m) : "
         )
     )
-    output: str = get_city_weather(city, metric_unit)
+    output: str = get_weather_from_city(city, metric_unit)
     print(output)
 
 
@@ -63,16 +63,16 @@ def get_cardinal_from_degrees(wind_degrees: int) -> str:
     return DIRECTIONS[degrees]
 
 
-def get_city_weather(city: str, metric_unit) -> str:
+def get_weather_from_city(city: str, metric_unit) -> str:
     """Returns the weather of the city that is passed by parameter"""
     if metric_unit.lower() == "i":
         units = "imperial"
         degrees_symbol = "ºF"
-        speed_symbol = "mph"
+        wind_speed_unit = "mph"
     else:
         units = "metric"
         degrees_symbol = "ºC"
-        speed_symbol = "km/h"
+        wind_speed_unit = "km/h"
 
     url: str = f"{BASE_URL}?appid={API_KEY}&q={city}&units={units}"
 
@@ -112,7 +112,7 @@ def get_city_weather(city: str, metric_unit) -> str:
         )
         output += chalk.cyan(f"💧 La humedad es del {humidity}%\n")
         output += chalk.green(
-            f"🍃 La velocidad del viento es de {wind_speed*3.6:.2f} {speed_symbol}"
+            f"🍃 La velocidad del viento es de {wind_speed*3.6:.2f} {wind_speed_unit}"
             f" (🧭 Dirección del viento: {get_cardinal_from_degrees(wind_degrees)})\n"
         )
         output += chalk.yellow(f"☀ Amanece a las {sunrise_time} (hora local)\n")
