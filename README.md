@@ -4,6 +4,10 @@
 
 * [Javier Picón](https://github.com/MCPikon)
 
+## Vista previa
+
+![WeatherAPIProject Image](image.jpg)
+
 ## Descripción
 
 App del Tiempo creada con Python (v3.11.5) que muestra los datos del tiempo de la ciudad que se le pase por consola. La app obtiene los datos de la API de [OpenWeatherMap](https://openweathermap.org/api)
